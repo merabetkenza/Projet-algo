@@ -3,71 +3,82 @@
 #include <string.h>
 #include <stdbool.h>
 
- // PART 1 
+// Structure pour un article de la liste de courses
 typedef struct Item {
-    char name[50];
-    bool priority;
-    struct Item* next;
+    char name[50];
+    bool priority;           // Indique si l'article est urgent
+    struct Item* next;       // Pointeur vers l'article suivant
 } Item;
 
-void addItem(Item head, const char* name, bool isUrgent) {
-    Item* newNode = (Item)malloc(sizeof(Item));
-    strcpy(newNode->name, name);
-    newNode->priority = isUrgent;
-    newNode->next = NULL;
+// Structure pour une entrée d'historique
+typedef struct History {
+    char action[10];         // Action : "Ajout" ou "Suppression"
+    char name[50];           // Nom de l'article concerné
+    struct History* next;    // Pointeur vers l'entrée suivante
+} History;
 
-    if (head == NULL) {
-        head = newNode;
-    } else {
-        Item current = *head;
-        while (current->next != NULL) {
-            current = current->next;
-        } 
+// Ajouter un article à la liste
+void addItem(Item** head, const char* name, bool isUrgent) {
+    Item* newNode = (Item*)malloc(sizeof(Item));
+    strcpy(newNode->name, name);
+    newNode->priority = isUrgent;
+    newNode->next = NULL;
 
-        current->next = newNode;
-    }
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        Item* current = *head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
 
-    printf("Article ajouté : %s\n", name);
+    printf("Article ajouté : %s\n", name);
 }
 
-void removeItem(Item head, const char* name) {
-    Item* current = head;
-    Item prev = NULL;
+// Supprimer un article de la liste
+void removeItem(Item** head, const char* name) {
+    Item* current = *head;
+    Item* prev = NULL;
 
-    while (current != NULL && strcmp(current->name, name) != 0) {
-        prev = current;
-        current = current->next;
-    }
+    while (current != NULL && strcmp(current->name, name) != 0) {
+        prev = current;
+        current = current->next;
+    }
 
-    if (current == NULL) {
-        printf("Article non trouvé : %s\n", name);
-        return;
-    }
+    if (current == NULL) {
+        printf("Article non trouvé : %s\n", name);
+        return;
+    }
 
-    if (prev == NULL) {
-        head = current->next;
-    } else {
-        prev->next = current->next;
-    }
+    if (prev == NULL) {
+        *head = current->next;  // Supprimer la tête
+    } else {
+        prev->next = current->next;  // Supprimer au milieu ou à la fin
+    }
 
-    free(current);
-    printf("Article supprimé : %s\n", name);
+    free(current);
+    printf("Article supprimé : %s\n", name);
 }
 
-void searchItem(Item head, const char* name) {
-    Item* current = head;
-    while (current != NULL) {
-        if (strcmp(current->name, name) == 0) {
-            printf("Article trouvé : %s\n", name);
-            if (current->priority) {
-                printf("Cet article est marqué comme URGENT.\n");
-            }
-            return;
-        }
-        current = current->next;
-    }
-    printf("Article introuvable : %s\n", name);
+// Rechercher un article dans la liste
+void searchItem(Item* head, const char* name) {
+    Item* current = head;
+    while (current != NULL) {
+        if (strcmp(current->name, name) == 0) {
+            printf("Article trouvé : %s\n", name);
+            if (current->priority) {
+                printf("Cet article est marqué comme URGENT.\n");
+            }
+            return;
+        }
+        current = current->next;
+    }
+    printf("Article introuvable : %s\n", name);
 }
+
+
 // part 2
 // part 3
 // part 4 
