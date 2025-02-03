@@ -74,6 +74,32 @@ void searchItem(Item* head, const char* name) {
 
 // part 2
 // part 3
+typedef struct History {
+    char action[10];
+    char name[50];
+    struct History* next;
+} History;
+
+void addToHistory(History** head, const char* action, const char* name) {
+    History* newNode = (History*)malloc(sizeof(History));
+    strcpy(newNode->action, action);
+    strcpy(newNode->name, name);
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void displayHistory(History* head) {
+    if (head == NULL) {
+        printf("Aucune modification enregistrée.\n");
+        return;
+    }
+
+    printf("== Historique des modifications ==\n");
+    while (head != NULL) {
+        printf("%s : %s\n", head->action, head->name);
+        head = head->next;
+    }
+}
 // part 4 
 int main() {
 
