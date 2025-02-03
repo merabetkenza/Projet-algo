@@ -10,13 +10,6 @@ typedef struct Item {
     struct Item* next;       // Pointeur vers l'article suivant
 } Item;
 
-// Structure pour une entrée d'historique
-typedef struct History {
-    char action[10];         // Action : "Ajout" ou "Suppression"
-    char name[50];           // Nom de l'article concerné
-    struct History* next;    // Pointeur vers l'entrée suivante
-} History;
-
 // Ajouter un article à la liste
 void addItem(Item** head, const char* name, bool isUrgent) {
     Item* newNode = (Item*)malloc(sizeof(Item));
