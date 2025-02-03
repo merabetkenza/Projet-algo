@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+typedef struct Item {
+    char name[50];
+    bool priority;
+    struct Item* next;
+} Item;
+
+void addItem(Item head, const char* name, bool isUrgent) {
+    Item* newNode = (Item)malloc(sizeof(Item));
+    strcpy(newNode->name, name);
+    newNode->priority = isUrgent;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        Item current = *head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+
+    printf("Article ajouté : %s\n", name);
+}
+
+void removeItem(Item head, const char* name) {
+    Item* current = head;
+    Item prev = NULL;
+
+    while (current != NULL && strcmp(current->name, name) != 0) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == NULL) {
+        printf("Article non trouvé : %s\n", name);
+        return;
+    }
+
+    if (prev == NULL) {
+        head = current->next;
+    } else {
+        prev->next = current->next;
+    }
+
+    free(current);
+    printf("Article supprimé : %s\n", name);
+}
+
+void searchItem(Item head, const char* name) {
+    Item* current = head;
+    while (current != NULL) {
+        if (strcmp(current->name, name) == 0) {
+            printf("Article trouvé : %s\n", name);
+            if (current->priority) {
+                printf("Cet article est marqué comme URGENT.\n");
+            }
+            return;
+        }
+        current = current->next;
+    }
+    printf("Article introuvable : %s\n", name);
+}
