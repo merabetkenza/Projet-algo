@@ -73,6 +73,52 @@ void searchItem(Item* head, const char* name) {
 
 
 // part 2
+void displayList(Item* head) {
+    if (head == NULL) {
+        printf("La liste est vide.\n");
+        return;
+    }
+
+    // Compter les articles urgents
+    int urgentCount = 0;
+    Item* current = head;
+    while (current != NULL) {
+        if (current->priority) {
+            urgentCount++;
+        }
+        current = current->next;
+    }
+
+    // Afficher le message
+    if (urgentCount > 0) {
+        printf("Vous avez %d article(s) urgent(s).\n", urgentCount);
+    } else {
+        printf("Vous n'avez aucun article urgent.\n");
+    }
+
+    printf("\nListe des courses :\n");
+
+    // Afficher les articles urgents
+    current = head;
+    while (current != NULL) {
+        if (current->priority) {
+            printf("- %s (URGENT)\n", current->name);
+        }
+        current = current->next;
+    }
+
+    // Afficher les articles non urgents
+    current = head;
+    while (current != NULL) {
+        if (!current->priority) {
+            printf("- %s\n", current->name);
+        }
+        current = current->next;
+    }
+}
+
+
+
 // part 3
 typedef struct History {
     char action[10];
